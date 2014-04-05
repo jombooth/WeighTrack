@@ -1,5 +1,4 @@
 from django.conf.urls.defaults import *
-from django.conf import settings
 from weightrack import views
 
 # Uncomment the next two lines to enable the admin:
@@ -10,7 +9,7 @@ from weightrack import views
 
 urlpatterns = patterns('',
 
-	url(r'^weightrack/', include('weightrack.urls'))
+	url(r'^$', views.index, name='index')
 
 
 
@@ -24,10 +23,3 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     #(r'^admin/', include(admin.site.urls)),
 )
-
-if settings.DEBUG:
-    urlpatterns += patterns(
-        'django.views.static',
-        (r'media/(?P<path>.*)',
-        'serve',
-        {'document_root': settings.MEDIA_ROOT}), )
