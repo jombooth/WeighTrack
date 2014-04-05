@@ -9,4 +9,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^wt_app/', include('weightrack_app.urls')),
+    #just route all traffic to the weightrack app for now
 )
