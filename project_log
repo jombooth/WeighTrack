@@ -1,0 +1,9 @@
+>> 4.15 - jo
+
+Deciding on models for SQLite database. I think we want the RFID string to serve as teh lookup key in our database of items.
+
+I made a "foreign key" called "batch," which I added to our database. This is a many-one relation - different items can have the same batch. Note that the batch must be set up first.
+
+we should make some constructor methods to quicken the process of setting these things up (e.g. make it easy to set the expdates and such.)
+
+Question for the future: Django's SQLite comes with the development server. Should we migrate to mySql? So far I love SQLite...
