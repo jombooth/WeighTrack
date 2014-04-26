@@ -1,0 +1,44 @@
+.hero-unit{
+	padding-left: 40px;
+	padding-right: 40px;
+	padding-bottom: 40px;
+	padding-top: 20px;
+	background-color: #f5f5f5;
+	height: 400px;
+}
+.hero-unit h1{
+	line-height: 40px;
+	font-size: 45px;
+	margin-bottom: 30px;
+}
+body{
+	background:url(../img/BG.jpg) repeat;
+}
+.graphcontainer{
+	width: 160px;
+	display: inline-block;
+	vertical-align: top;
+}
+.graphcontainer .graph{
+	opacity: 0.6;
+	position: absolute;
+	width: 150px;
+
+}
+.graphcontainer .bottom{
+	padding: 0px;
+	margin: 0px;
+	margin-top: 270px;
+	font-weight: bold;
+	text-align: center;
+
+}
+.graphcontainer p {
+	margin: 0px;
+}
+.graphcontainer .percent{
+	position: absolute;
+	margin-top: 200px;
+	margin-left: 35px;
+	font-size: 40px;
+}

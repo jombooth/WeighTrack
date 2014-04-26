@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+{% load static %} <!-- New line -->
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap-fluid-adj.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/bootstrap-responsive.css' ' %}" rel="stylesheet">
+        <title>WeighTrack. {% block title %}Keep tabs on your groceries.{% endblock %}</title>
+    </head>
+
+    <body>
+
+<!-- TODO:IMPROVE -->
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+       <div class="container">
+           <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+           </button>
+           <a class="brand" href="/wt_app/">Burkugler Enterprises</a>
+
+           <div class="nav-collapse collapse">
+               <ul class="nav pull-right">
+                    {% if user.is_authenticated %}
+                    <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                    <li><a href="/wt_app/logout/">Log Out</a></li>
+                    {% else %}
+                    <li><a href="/wt_app/register/">Register Here</a></li>
+                    <li><a href="/wt_app/login/">Log In</a></li>
+                    {% endif %}
+                    <!--<li><a href="/wt_app/logout/">Logout</a></li>
+                    <li><a href="/wt_app/register/">Register</a></li>
+                    <li><a href="/wt_app/login/">Login</a></li> -->
+               </ul>
+                   <!--<li><a href="/wt_app/about/">About</a></li> -->
+               </ul>
+           </div>
+           <!--/.nav-collapse -->
+       </div>
+   </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                <h3>Meet the team</h3>
+        <img margin-left="60px" margin-right="auto" width="150px" src="{% static 'img/lauren.jpg' %}" />
+    	<h4> Lauren Urke </h4>
+    	<img margin-left="60px" margin-right="auto" width="150px" src="{% static 'img/ty.jpg' %}" />
+    	<h4> Tyler Kugler </h4>
+    	<img margin-left="60px" margin-right="auto" width="150px" src="{% static 'img/jo.jpg' %}" />
+    	<h4> Jo Booth </h4>
+                </div>
+            <!--/.well -->
+        </div>
+        <!--/span-->
+        <div class="span9">
+          <div class="hero-unit">
+            <img src="{% static 'img/hardware.jpg' %}" />
+
+          </div>    
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+</div>
+<!--/.fluid-container-->
+
+<hr>
+
+
+<!-- IMPROVE -->
+
+
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

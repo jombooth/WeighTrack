@@ -2,26 +2,26 @@ from django.db import models
 
 # Create your models here.
 
-'''class Batch(models.Model):
+class Batch(models.Model):
 	#for tracking batches. Assume expdate in common across batch.
 	batchID = models.CharField(max_length=256, unique=True)
 	manufacturer = models.CharField(max_length=256)
 	expDate = models.DateField(default=None)
 
 	def __unicode__(self):
-		return self.batchID + " by manufacturer: " + self.manufacturer'''
+		return self.batchID + " by manufacturer: " + self.manufacturer
 
 class TaggedItem(models.Model):
 	#primary identification
 	name = models.CharField(max_length=256)
 	tag = models.CharField(max_length=256, unique=True)
-	#batch = models.ForeignKey(Batch)
+	batch = models.ForeignKey(Batch)
 
 	#app-related metadata
 	container = models.CharField(max_length=256)
 	fullWeight = models.IntegerField()
 	emptyWeight = models.IntegerField()
-	currWeight = models.IntegerField()
+	currentLevel = models.IntegerField()
 	saleDate = models.DateField(default=None)
 	#store product url for reordering
 	url = models.URLField()
@@ -30,15 +30,12 @@ class TaggedItem(models.Model):
 		return self.name
 
 class Scale(models.Model):
-	wt_id = models.CharField(max_length=256)
+	scaleID = models.CharField(max_length=256)
 	rfid_l = models.CharField(max_length=2048)
 	rfid_r = models.CharField(max_length=2048)
 	weight = models.IntegerField()
-	rfid_l_old = models.CharField(max_length=2048)
-	rfid_r_old = models.CharField(max_length=2048)
-	weight_old = models.IntegerField()
 
-	'''def checkIn(self,tag):
+	def checkIn(self,tag):
 		if tag not in checkedInItems:
 			checkedInItems += "**" + tag
 			return True
@@ -58,10 +55,10 @@ class Scale(models.Model):
 		if tag in monitItems:
 			monitItems.replace("**" + tag, '', 1)
 			return True
-		return False'''
+		return False
 
 
-'''class WeighTrackR(models.Model):
+class WeighTrackR(models.Model):
 	user = models.CharField(max_length=50)
 	passHash = models.CharField(max_length=50)
 	scales = models.CharField(max_length=2048)
@@ -76,4 +73,4 @@ class Scale(models.Model):
 		if s.scaleID in scales:
 			scales.replace("**" + s.scaleID, '', 1)
 			return True
-		return False'''
+		return False
