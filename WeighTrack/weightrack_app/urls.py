@@ -9,6 +9,7 @@ urlpatterns = patterns('',
         url(r'^about/$', views.user_about, name='about'),
         url(r'^myWeighTrack/$', views.user_devices, name='mydevices'),
         url(r'^devReg/$', views.user_device_reg, name='device_reg'),
-        url(r'^req/.*$', views.req, name='request'),
+        #change views.t to views.req for actual day
+        url(r'^req/.*$', views.t, name='request'),
 
         )

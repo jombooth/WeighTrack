@@ -159,6 +159,10 @@ def user_devices(request):
 def user_device_reg(request):
     return render_to_response('weightrack_app/devReg.html')
 
+def t(request):
+    context=RequestContext(request)
+    return render_to_response('weightrack_app/test.html', context)
+
 
 def req(request):
     context=RequestContext(request)
@@ -186,11 +190,17 @@ def req(request):
             right = None
         else:
             right = TaggedItem.objects.filter(tag=r)
+            if not right:
+                t = TaggedItem.objects.create(name = "Unnamed", tag = r, container= "none", fullWeight= 100, emptyWeight = 0, currWeight = 0, saleDate = datetime.date.today(), url = 'http://apple.com')
+                right = TaggedItem.objects.filter(tag=r)
             right = right[0]
         if l == '0000':
             left = None
         else:
             left = TaggedItem.objects.filter(tag=l)
+            if not left:
+                t = TaggedItem.objects.create(name = "Unnamed", tag = l, container= "none", fullWeight= 100, emptyWeight = 0, currWeight = 0, saleDate = datetime.date.today(), url = 'http://apple.com')
+                left = TaggedItem.objects.filter(tag=l)
             left = left[0]
         if results[0].rfid_r == '0000':
             old_right = None
@@ -205,6 +215,8 @@ def req(request):
         a = '0'
         b = '0'
         if left:
+            print left.saleDate
+            print datetime.date.today()
             if left.saleDate < datetime.date.today():
                 a = '1'
         if right:
@@ -258,15 +270,11 @@ def req(request):
             Scale.objects.filter(wt_id=wt).update(rfid_r=r)
 
     newresults = Scale.objects.all()
-    #print newresults
+    print newresults
     newitems = TaggedItem.objects.all()
-    #print newitems
+    print newitems
 
     return render_to_response('weightrack_app/return.html', {'results':results , 'new':newresults, 'item':items, 'newitems':newitems, 'ab':ab}, context)
-
-
-
-
 
 
 
