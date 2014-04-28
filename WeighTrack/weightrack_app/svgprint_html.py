@@ -27,7 +27,7 @@ outSTR = """<svg
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
      inkscape:cx="-285.59345"
-     inkscape:cy="98.509114"
+     inkscape:cy="90.509114"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -72,9 +72,9 @@ outSTR = """<svg
 </svg>
 """
 
-d= {'Eggs' : 'FFFF66', 'Orange Juice' : 'FF6600', 'BLUE' : '0000c0', 'Milk' : 'FFF7D9'}
+d= {'Eggs' : 'FFFF66', 'Orange Juice' : 'FF6600', 'Broccoli' : '009933', 'Milk' : 'FFF7D9'}
 
 def im_output(value, color):
 	files = [ f for f in listdir(os.getcwd()) if isfile(join(os.getcwd(),f)) ]
 	i = -1
-	print outSTR.replace('MYHEIGHTVALUE', str(value * 320)).replace('MYCOLORVALUE', d.get(color))
+	return outSTR.replace('MYHEIGHTVALUE', str(value * 320)).replace('MYCOLORVALUE', d.get(color))

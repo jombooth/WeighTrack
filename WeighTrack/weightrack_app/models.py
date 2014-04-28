@@ -23,11 +23,12 @@ class TaggedItem(models.Model):
 	emptyWeight = models.IntegerField()
 	currWeight = models.IntegerField()
 	saleDate = models.DateField(default=None)
+
 	#store product url for reordering
 	url = models.URLField()
 
 	def __unicode__(self):
-		return self.name
+		return self.name +' tag '+ self.tag +' currWeight ' + str(self.currWeight)
 
 class Scale(models.Model):
 	wt_id = models.CharField(max_length=256)
@@ -38,42 +39,5 @@ class Scale(models.Model):
 	rfid_r_old = models.CharField(max_length=2048)
 	weight_old = models.IntegerField()
 
-	'''def checkIn(self,tag):
-		if tag not in checkedInItems:
-			checkedInItems += "**" + tag
-			return True
-		return False
-
-	def monitItem(self,tag):
-		if tag not in monitItems:
-			monitItems += "**" + tag
-			return True
-		return False
-
-	def checkout(self,tag):
-		if tag in checkedInItems:
-			monitItems.replace("**" + tag, '', 1)
-			checkedInItems.replace("**" + tag, '', 1)
-			return True
-		if tag in monitItems:
-			monitItems.replace("**" + tag, '', 1)
-			return True
-		return False'''
-
-
-'''class WeighTrackR(models.Model):
-	user = models.CharField(max_length=50)
-	passHash = models.CharField(max_length=50)
-	scales = models.CharField(max_length=2048)
-
-	def addScale(self,s):
-		if s.scaleID not in scales:
-			scales += "**" + s.scaleID
-			return True
-		return False
-
-	def removeScale(self, s):
-		if s.scaleID in scales:
-			scales.replace("**" + s.scaleID, '', 1)
-			return True
-		return False'''
+	def __unicode__(self):
+		return self.wt_id +' left '+ self.rfid_l +' right ' + self.rfid_r + ' weight '+ str(self.weight)

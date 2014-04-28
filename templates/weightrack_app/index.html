@@ -50,7 +50,7 @@
 
 <div class="container-fluid">
     <div class="row-fluid">
-        <div class="span3">
+        <div class="span2">
             <div class="well sidebar-nav">
                 <h1>Menu</h1>
     {% if user.is_authenticated %}
@@ -67,10 +67,11 @@
             <!--/.well -->
         </div>
         <!--/span-->
-        <div class="span9">
+        <div class="span10">
           <div class="hero-unit">
           {% if user.is_authenticated %}
             <h1>{{ user.username }}'s Fridge</h1>
+            <!--
   	        <div class="graphcontainer">
               <img class = "graph" src="{% static 'pics/imageSVG9.svg' %}" alt="sexy corporate logo" /> 
               <p class="percent"> 32% </p>
@@ -109,7 +110,20 @@
                 <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}">Reorder
                 </button> 
               </div>
-            </div>
+            </div> -->
+
+            {% for item in items %}
+                <div class="graphcontainer">
+                  {% autoescape off %}{{ item.2 }}{% endautoescape %}
+                  <p class="percent"> {{item.1}}% </p>
+                  <div class = "bottom" >
+                    <p> {{item.0}}</p> 
+                    <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}"> Reorder
+                    </button> 
+                  </div>
+                </div>
+            {% endfor %}
+
 
             {% else %}
               <img src="{% static 'img/hardware.jpg' %}" />

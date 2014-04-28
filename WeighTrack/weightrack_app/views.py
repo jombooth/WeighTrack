@@ -10,7 +10,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import logging
 from weightrack_app.models import TaggedItem, Scale
-
+import datetime
+from svgprint_html import im_output
 
 
 #to be clear, this is views.index from the context of urls.py
@@ -32,11 +33,25 @@ def index(request):
         if files[-3:].lower() in ["gif","png","jpg","bmp"] :
             pics.append(files)'''
 
+    objects = TaggedItem.objects.all()
+    items = []
+    for item in objects:
+        t = item.tag
+        n = str(item.name)
+        f = item.fullWeight
+        e = item.emptyWeight
+        c = item.currWeight
+        percent = int(float(c-e)/float(f-e)*100)
+        image = im_output(float(c-e)/float(f-e), n)
+        items.append([n,percent,image])
+
+
+
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
     # Note that the first parameter is the template we wish to use.
     #????????????????
-    return render_to_response('weightrack_app/index.html', context_dict, context)
+    return render_to_response('weightrack_app/index.html', {'items':items}, context)
 
 def register(request):
     # Like before, get the request's context.
@@ -144,6 +159,7 @@ def user_devices(request):
 def user_device_reg(request):
     return render_to_response('weightrack_app/devReg.html')
 
+
 def req(request):
     context=RequestContext(request)
     u = request.path_info
@@ -157,19 +173,96 @@ def req(request):
     old_left = None
     old_right = None
 
+    items = TaggedItem.objects.all()
+
     results= Scale.objects.filter(wt_id=wt)
+    #print results
     if not results:
         s = Scale.objects.create(wt_id=wt, rfid_l=l, rfid_r = r, weight = w, rfid_l_old = l, rfid_r_old = r, weight_old = w)
     else:
         result = results[0]
-        print result
-        print result.weight 
-        result.update(weight=w)
+
+        if r == '0000':
+            right = None
+        else:
+            right = TaggedItem.objects.filter(tag=r)
+            right = right[0]
+        if l == '0000':
+            left = None
+        else:
+            left = TaggedItem.objects.filter(tag=l)
+            left = left[0]
+        if results[0].rfid_r == '0000':
+            old_right = None
+        else:
+            old_right = TaggedItem.objects.filter(tag=results[0].rfid_r)
+            old_right = old_right[0]
+        if results[0].rfid_l == '0000':
+            old_left = None
+        else:
+            old_left = TaggedItem.objects.filter(tag=results[0].rfid_l)
+            old_left = old_left[0]
+        a = '0'
+        b = '0'
+        if left:
+            if left.saleDate < datetime.date.today():
+                a = '1'
+        if right:
+            if right.saleDate < datetime.date.today():
+                b = '1'
+        ab = a + b
+
+        if not w == result.weight:
+            #if left rfid changed
+            if not l == result.rfid_l:
+
+                #if left rfid is now gone but right isnt
+                if l == '0000' and not r == '0000':
+                    #make sure that the w = cur weight for right rfid
+                    TaggedItem.objects.filter(tag=r).update(currWeight = w)
+                #if left rfid is now back from gone
+                elif result.rfid_l == '0000' and not l == '0000':
+                    #w-wold becomes the new cur weight for left rfid
+                    wnew = w - result.weight
+                    TaggedItem.objects.filter(tag=l).update(currWeight = wnew)
+                #if left rfid just changed while right stayed the same
+                elif result.rfid_r == r and not result.rfid_l == l and not l == '0000':
+                    #cur weight for new left becomes w-wold- curr weight for displacd left
+                    wnew = w - (result.weight - old_left.currWeight)
+                    TaggedItem.objects.filter(tag=l).update(currWeight = wnew)
+            #if right rfid changed
+            if not r == result.rfid_r:
+                #if right rfid is now gone
+                if r == '0000' and not l == '0000':
+                    #make sure that the w = cur weight for left rfid
+                    TaggedItem.objects.filter(tag=l).update(currWeight = w)
+                #if right rfid is now back from gone
+                elif result.rfid_r == '0000' and not r == '0000':
+                    #w-wold becomes the new cur weight for right rfid
+                    wnew = w - result.weight
+                    TaggedItem.objects.filter(tag=r).update(currWeight = wnew)
+                #if right rfid just changed while left stayed the same
+                elif result.rfid_l == l and not result.rfid_r == r and not r == '0000':
+                    #cur weight for new right becomes w-wold- curr weight for displacd right
+                    wnew = w - (result.weight - old_right.currWeight)
+                    TaggedItem.objects.filter(tag=r).update(currWeight = wnew)
+
+            #update database for next time
+
+            oldweight = result.weight
+            Scale.objects.filter(wt_id=wt).update(weight_old = oldweight)
+            Scale.objects.filter(wt_id=wt).update(weight=w)
+            Scale.objects.filter(wt_id=wt).update(rfid_l_old = result.rfid_l)
+            Scale.objects.filter(wt_id=wt).update(rfid_l=l)
+            Scale.objects.filter(wt_id=wt).update(rfid_r_old = result.rfid_r)
+            Scale.objects.filter(wt_id=wt).update(rfid_r=r)
 
     newresults = Scale.objects.all()
+    #print newresults
+    newitems = TaggedItem.objects.all()
+    #print newitems
 
-
-    return render_to_response('weightrack_app/return.html', {'results':results , 'new':newresults}, context)
+    return render_to_response('weightrack_app/return.html', {'results':results , 'new':newresults, 'item':items, 'newitems':newitems, 'ab':ab}, context)
 
 
 

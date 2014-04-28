@@ -1,8 +1,4 @@
-import os
-from os import listdir
-from os.path import isfile, join
-
-outSTR = """<svg
+<svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -64,17 +60,10 @@ outSTR = """<svg
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
     <path
-       style="fill:#MYCOLORVALUE;fill-opacity:0.43378996;stroke:#000000;stroke-width:0.79987603px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 396.32893,666.03325 182.95714,0 0,-MYHEIGHTVALUE -182.95714,0 z"
+       style="fill:#FFF7D9;fill-opacity:0.43378996;stroke:#000000;stroke-width:0.79987603px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 396.32893,666.03325 182.95714,0 0,-288.0 -182.95714,0 z"
        id="path2985-3"
        inkscape:connector-curvature="0" />
   </g>
 </svg>
-"""
 
-d= {'Eggs' : 'FFFF66', 'Orange Juice' : 'FF6600', 'BLUE' : '0000c0', 'Milk' : 'FFF7D9'}
-
-def im_output(value, color):
-	files = [ f for f in listdir(os.getcwd()) if isfile(join(os.getcwd(),f)) ]
-	i = -1
-	print outSTR.replace('MYHEIGHTVALUE', str(value * 320)).replace('MYCOLORVALUE', d.get(color))
