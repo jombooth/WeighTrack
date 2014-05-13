@@ -72,9 +72,12 @@ outSTR = """<svg
 </svg>
 """
 
-d= {'Eggs' : 'FFFF66', 'Orange Juice' : 'FF6600', 'Broccoli' : '009933', 'Milk' : 'FFF7D9'}
+d= {'Eggs' : 'FFFF66', 'OJ' : 'FF6600', 'Broccoli' : '008800', 'Milk' : 'FFF7D9', 'Unnamed':'0099cc', 'Water':'0099cc', 'Bourbon': 'AF6C3E'}
 
 def im_output(value, color):
 	files = [ f for f in listdir(os.getcwd()) if isfile(join(os.getcwd(),f)) ]
 	i = -1
-	return outSTR.replace('MYHEIGHTVALUE', str(value * 320)).replace('MYCOLORVALUE', d.get(color))
+	mycolor = d.get(color)
+	if mycolor is None:
+		mycolor = '0099cc'
+	return outSTR.replace('MYHEIGHTVALUE', str(value * 320)).replace('MYCOLORVALUE', mycolor)

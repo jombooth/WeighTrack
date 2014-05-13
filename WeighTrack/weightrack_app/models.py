@@ -41,3 +41,18 @@ class Scale(models.Model):
 
 	def __unicode__(self):
 		return self.wt_id +' left '+ self.rfid_l +' right ' + self.rfid_r + ' weight '+ str(self.weight)
+
+
+class Order(models.Model):
+	name = models.CharField(max_length=256)
+	tag = models.CharField(max_length=256)
+	date = models.DateField(default=None)
+	qty = models.IntegerField()
+	arrived = models.IntegerField()
+
+	def __unicode__(self):
+		return self.name +' tag '+ self.tag +' date ' + str(self.date) + ' arrived ' + str(self.arrived)
+
+
+
+

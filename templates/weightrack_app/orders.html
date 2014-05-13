@@ -11,6 +11,14 @@
     <link href="{% static 'css/bootstrap-responsive.css' ' %}" rel="stylesheet">
     <link href="{% static 'css/index.css' %}" rel="stylesheet">
         <title>WeighTrack. {% block title %}Keep tabs on your groceries.{% endblock %}</title>
+
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <!-- <script src="{% static 'js/jquery.js' %}"></script> -->
+
+    <!-- <script src="{% static 'js/order.js' %}"></script> -->
+
+
     </head>
 
     <body>
@@ -70,63 +78,26 @@
         <div class="span10">
           <div class="hero-unit">
           {% if user.is_authenticated %}
-            <h1>{{ user.username }}'s Fridge</h1>
-            <!--
-  	        <div class="graphcontainer">
-              <img class = "graph" src="{% static 'pics/imageSVG9.svg' %}" alt="sexy corporate logo" /> 
-              <p class="percent"> 32% </p>
-              <div class = "bottom" >
-                <p> Milk (4 days)</p> 
-                <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}"> Reorder
-                </button> 
-              </div>
-            </div>
-            <div class= "graphcontainer">
-              <img class = "graph" src="{% static 'pics/imageSVG10.svg' %}" alt="sexy corporate logo" /> 
-              <p class="percent"> 88% </p>
-
-              <div class = "bottom" >
-
-                <p> Grape Juice </p>
-                <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}">Reorder
-                </button>
-              </div> 
-            </div>
-            <div class = "graphcontainer">
-              <img class="graph" src="{% static 'pics/imageSVG11.svg' %}" alt="sexy corporate logo" /> 
-              <p class="percent"> 41% </p>
-
-              <div class = "bottom" >
-                <p> Green Tea</p>
-                <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}">Reorder
-                </button> 
-              </div>
-            </div>
-            <div class = "graphcontainer">
-              <img class = "graph" src="{% static 'pics/imageSVG12.svg' %}" alt="sexy corporate logo" />
-              <p class="percent"> 67% </p>
-              <div class = "bottom" >
-                <p> Rooibos</p>
-                <button type="button" class="btn btn-default btn-lg"><img width="20px" src="{%static 'img/cart.png' %}">Reorder
-                </button> 
-              </div>
-            </div> -->
-
-            {% for item in items %}
-                <div class="graphcontainer">
-                  {% autoescape off %}{{ item.2 }}{% endautoescape %}
-                  <p class="percent"> {{item.1}}% </p>
-                  <div class = "bottom" >
-                    <p> {{item.0}}</p> 
-                    <form id="reorder_form" method="post" action="/wt_app/" enctype="multipart/form-data"> 
+            <h1>{{ user.username }}'s Order History</h1>
+           
+            <table>
+            <tr><th> Item</th><th> Date placed </th> <th> Status </th> <th> </th> </tr>
+            {% for item in orders %}
+            		<tr>
+                    <td> {{item.0}} </td> 
+                    <td> {{item.1}}</td> 
+                    <td> {{item.2}}  </td> 
+                    <td> 
+                    <form id="reorder_form" method="post" action="/wt_app/orders/" enctype="multipart/form-data"> 
                       {% csrf_token %}
 
                       <input type="hidden" name = "name" value={{item.0}}>
                       <input type='submit' id = {{item.0}} class="btn btn-default btn-lg" value='Reorder'>
                     </form>
-                  </div>
-                </div>
+                    </td>
+                </tr>
             {% endfor %}
+            </table>
 
 
             {% else %}
@@ -142,12 +113,6 @@
 
 <hr>
 
-
-<!-- IMPROVE -->
-
-
-    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>
